@@ -1,5 +1,3 @@
-// 学校提供
-
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -30,15 +28,15 @@ namespace trrne.Secret
             };
 
             Rfc2898DeriveBytes deriveBytes = new(password, size.buffer);
-            var salt = deriveBytes.Salt;
+            byte[] salt = deriveBytes.Salt;
             managed.Key = deriveBytes.GetBytes(size.buffer);
             managed.GenerateIV();
 
-            using var encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
-            byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
+            using ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
+            byte[] dst = encrypt.TransformFinalBlock(src, 0, src.Length);
             List<byte> compile = new(salt);
             compile.AddRange(managed.IV);
-            compile.AddRange(dest);
+            compile.AddRange(dst);
             return compile.ToArray();
         }
 
@@ -54,19 +52,17 @@ namespace trrne.Secret
                 Padding = PaddingMode.PKCS7
             };
 
-            List<byte> compile = new(src);
-            List<byte> salt = compile.GetRange(0, size.buffer);
+            List<byte> compile = new(src), salt = compile.GetRange(0, size.buffer);
             managed.IV = compile.GetRange(size.buffer, size.buffer).ToArray();
             managed.Key = new Rfc2898DeriveBytes(password, salt.ToArray()).GetBytes(size.buffer);
 
-            using var decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
-            int index = size.buffer * 2;
-            int count = compile.Count - (size.buffer * 2);
+            using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
+            int index = size.buffer * 2, count = compile.Count - (size.buffer * 2);
             byte[] plain = compile.GetRange(index, count).ToArray();
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }
 

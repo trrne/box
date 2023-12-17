@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UniApp = UnityEngine.Application;
 
 namespace trrne.Box
 {
     public static class Paths
     {
-        public static string Data => UniApp.dataPath;
-        public static string Persistant => UniApp.persistentDataPath;
+        public static string DataPath(string name) => $"{UniApp.dataPath}/{name}";
+        public static string PersistantPath(string name) => $"{UniApp.persistentDataPath}/{name}";
     }
 
     public class App
@@ -14,8 +15,8 @@ namespace trrne.Box
         public static void SetFPS(int fps = -1) => UniApp.targetFrameRate = fps;
         public static void SetFPS(FrameRate fps) => UniApp.targetFrameRate = (int)fps;
 
-        public static float FPSf => Mathf.Floor(1 / Time.deltaTime);
-        public static int FPSint => Maths.Cutail(FPSf);
+        public static float FPS(int digit) => (float)Math.Round(1 / Time.unscaledDeltaTime, digit);
+        public static int FPS() => NumCs.Cutail(FPS());
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {
@@ -28,6 +29,8 @@ namespace trrne.Box
             truth = Time.timeScale;
             return Time.timeScale == scale;
         }
+
+        public static bool TimeScale(float scale) => Time.timeScale == scale;
 
         public static void SetTimeScale(float scale) => Time.timeScale = scale;
 

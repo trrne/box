@@ -1,64 +1,58 @@
 ﻿namespace trrne.Box
 {
-    public sealed class GateronSilentClear<T>
+    public sealed class Keyboard<T>
     {
-        T[] collection;
-        int count;
-        public int Count => count;
-        int capacity;
-        public int Capacity => capacity;
+        T[] items;
+        public int Length { get; private set; }
+        public int Capacity { get; private set; }
 
-        public T this[int index] => collection[index];
+        public T this[int index] => items[index];
 
-        public GateronSilentClear()
+        public Keyboard()
         {
-            capacity = 10;
-            collection = new T[capacity];
-            count = 0;
+            Capacity = 10;
+            items = new T[Capacity];
+            Length = 0;
         }
 
-        public GateronSilentClear(int capacity)
+        public Keyboard(int capacity)
         {
-            this.capacity = capacity;
-            collection = new T[capacity];
-            count = 0;
+            Capacity = capacity;
+            items = new T[capacity];
+            Length = 0;
         }
 
         public void Add(T item)
         {
-            if (count == capacity)
+            if (Length >= Capacity)
             {
-                capacity += 2;
-                var items = new T[capacity];
-
-                for (int i = 0; i < count; i++)
+                Capacity += 2;
+                var items = new T[Capacity];
+                for (int i = 0; i < Length; i++)
                 {
-                    items[i] = collection[i];
+                    items[i] = this.items[i];
                 }
-
-                collection = items;
+                this.items = items;
             }
-
-            collection[count] = item;
-            count++;
+            items[Length] = item;
+            ++Length;
         }
 
-        public void Remove(int index)
+        public void RemoveAt(int index)
         {
-            if (count <= 0)
+            if (Length <= 0)
             {
                 return;
             }
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (i != index)
                 {
                     continue;
                 }
             }
-
-            count--;
+            --Length;
         }
     }
 }

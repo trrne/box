@@ -4,7 +4,8 @@ namespace trrne.Box
 {
     public static class Line
     {
-        public static void Width(this LineRenderer line, float width) => line.startWidth = line.endWidth = width;
+        public static void Width(this LineRenderer line, float width)
+        => line.startWidth = line.endWidth = width;
 
         public static void Width(this LineRenderer line, float? start = null, float? end = null)
         {
@@ -19,7 +20,6 @@ namespace trrne.Box
 
         public static void Color(this LineRenderer line, Color? start = null, Color? end = null)
         {
-            // if (start is not null && end is not null)
             if (!Shorthand.None(start, end))
             {
                 line.startColor = start ?? line.startColor;

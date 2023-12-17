@@ -1,6 +1,4 @@
-﻿// 学校提供
-
-using System;
+﻿using System;
 using System.IO;
 using System.Text.Json;
 using UnityEngine;
@@ -13,7 +11,7 @@ namespace trrne.Secret
         {
             using FileStream stream = new(path, mode);
             IEncryption encrypt = new Rijndael(password);
-            var dataArr = encrypt.Encrypt(JsonUtility.ToJson(data));
+            byte[] dataArr = encrypt.Encrypt(JsonUtility.ToJson(data));
             stream.Write(dataArr, 0, dataArr.Length);
         }
 
@@ -21,10 +19,10 @@ namespace trrne.Secret
         {
             using (FileStream stream = new(path, FileMode.Open))
             {
-                var readArr = new byte[stream.Length];
+                byte[] readArr = new byte[stream.Length];
                 stream.Read(readArr, 0, (int)stream.Length);
                 IEncryption decrypt = new Rijndael(password);
-                read = JsonUtility.FromJson<T>(decrypt.DecryptToString(readArr));
+                read = JsonUtility.FromJson<T>(decrypt.Decrypt2String(readArr));
             }
             return read == null;
         }
@@ -39,7 +37,7 @@ namespace trrne.Secret
         public static void Write2(object data, string password, string path)
         {
             using FileStream stream = new(path, FileMode.Create);
-            var arr = new Rijndael(password).Encrypt(JsonSerializer.Serialize(data));
+            byte[] arr = new Rijndael(password).Encrypt(JsonSerializer.Serialize(data));
             stream.Write(arr, 0, arr.Length);
         }
 
@@ -48,9 +46,9 @@ namespace trrne.Secret
         {
             using (FileStream stream = new(path, FileMode.Open))
             {
-                var arr = new byte[stream.Length];
+                byte[] arr = new byte[stream.Length];
                 stream.Read(arr, 0, (int)stream.Length);
-                read = JsonSerializer.Deserialize<T>(new Rijndael(password).DecryptToString(arr));
+                read = JsonSerializer.Deserialize<T>(new Rijndael(password).Decrypt2String(arr));
             }
             return read == null;
         }

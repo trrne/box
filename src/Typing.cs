@@ -1,21 +1,20 @@
 using System;
-using UnityEngine;
 
 namespace trrne.Box
 {
     public static class Typing
     {
-        // public static T Cast<T>(this object obj) => (T)obj;
-        public static Vector2 ToVec2(this Vector3 vector) => (Vector2)vector;
-        public static Vector3 ToVec3(this Vector2 vector) => (Vector3)vector;
-        public static Vector3 ToVec3(this Quaternion q) => q.eulerAngles;
-        public static Quaternion ToQ(this Vector3 vector) => Quaternion.Euler(vector);
-        public static Quaternion ToQ(this Vector2 vector) => Quaternion.Euler(vector);
-
-        public static string ReplaceLump(this string target, in string[] befores, string after)
+        public static string ReplaceLump(this string target, string[] befores, string after)
         {
             befores.ForEach(before => target = target.Replace(before, after));
             return target;
+        }
+
+        public static void ReplaceLump2(ref string target, string[] befores, string after)
+        {
+            string temp = target;
+            befores.ForEach(before => temp = temp.Replace(before, after));
+            target = temp;
         }
 
         public static string Delete(this string target, string be) => target.Replace(be, "");
@@ -32,5 +31,8 @@ namespace trrne.Box
 
         public static string Link(this char[] objs) => string.Join("", objs);
         public static string Link(this byte[] b) => string.Join("", b);
+
+        public static int Length<T>(this T t) where T : Enum => Enum.GetValues(t.GetType()).Length;
+        public static int Length2<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
     }
 }
