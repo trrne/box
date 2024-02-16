@@ -16,23 +16,23 @@ namespace trrne.Box
         public static string[] Names()
         {
             var names = new string[sceneCount];
+            if (names.Length <= 0)
+            {
+                throw new KarappoyankeException("tabun settei sitenai");
+            }
+
             for (int i = 0; i < sceneCount; i++)
             {
                 names[i] = GetSceneAt(i).name;
             }
-
-            return names.Length switch
-            {
-                0 => throw new Karappoyanke("tabun settei sitenai"),
-                _ => names
-            };
+            return names;
         }
 
-        public static int Total(ScenesCountingFormat which)
+        public static int Total(ScenesCountingType which)
         => which switch
         {
-            ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
-            ScenesCountingFormat.Built => sceneCount,
+            ScenesCountingType.Unbuilt => sceneCountInBuildSettings,
+            ScenesCountingType.Built => sceneCount,
             _ => -1
         };
 

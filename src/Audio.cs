@@ -18,7 +18,7 @@ namespace trrne.Box
         {
             if (clips.Length > 0)
             {
-                AudioClip choice = clips.Choice();
+                var choice = clips.Choice();
                 source.PlayOneShot(choice, volume);
                 return choice;
             }

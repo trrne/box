@@ -7,7 +7,7 @@ namespace trrne.Box
         Low = 30,
         Medium = 60,
         High = 144,
-        Ultra = 200,
+        Ultra = 240,
         VSync = -1
     }
 
@@ -19,9 +19,9 @@ namespace trrne.Box
 
     public enum CursorRangeOfMotion
     {
-        InScene = CursorLockMode.Confined,
+        Limitless = CursorLockMode.None,
         Fixed = CursorLockMode.Locked,
-        Limitless = CursorLockMode.None
+        InScene = CursorLockMode.Confined
     }
 
     public enum KindaScreen
@@ -33,8 +33,8 @@ namespace trrne.Box
 
     public enum TimesFormat
     {
-        Domestics,
-        International
+        D, Domestics,
+        I, International
     }
 
     public enum RandStringType
@@ -46,7 +46,7 @@ namespace trrne.Box
         Number
     }
 
-    public enum ScenesCountingFormat
+    public enum ScenesCountingType
     {
         Built,
         Unbuilt
@@ -60,7 +60,7 @@ namespace trrne.Box
         MS, ms, MilliSecond, millisecond
     }
 
-    public enum StopwatchOutput
+    public enum StopwatchOutputFormat
     {
         HMS, HourMinuteSecond, hms,
         MS, MinuteSecond, ms
